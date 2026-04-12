@@ -12,21 +12,90 @@ function loadPageAdmin(url, element) {
         $(".nav-link").removeClass("active");
         $(element).addClass("active");
       }
-
+      setupCheckboxFilters();
     }
 
   });
 
+}// Checkbox dropdown filters for evaluation table
+function setupCheckboxFilters() {
+  const programBtn = document.getElementById("program-filter-btn");
+  const programMenu = document.getElementById("program-filter-menu");
+  const statusBtn = document.getElementById("status-filter-btn");
+  const statusMenu = document.getElementById("status-filter-menu");
+  const tableBody = document.getElementById("evaluation-table-body");
+  const searchInput = document.getElementById("evaluation-search");
+
+  if (!programBtn || !statusBtn || !tableBody) return;
+
+  // Toggle menus
+  programBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    programMenu.hidden = !programMenu.hidden;
+    statusMenu.hidden = true;
+  });
+
+  statusBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    statusMenu.hidden = !statusMenu.hidden;
+    programMenu.hidden = true;
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", function () {
+    programMenu.hidden = true;
+    statusMenu.hidden = true;
+  });
+
+  function getCheckedValues(menuId) {
+    const boxes = Array.from(document.querySelectorAll("#" + menuId + " input[type=checkbox]:checked"));
+    const values = boxes.map(b => b.value);
+    if (values.includes("all") || values.length === 0) return null; // null = show all
+    return values;
+  }
+
+  function applyFilters() {
+    const selectedPrograms = getCheckedValues("program-filter-menu");
+    const selectedStatuses = getCheckedValues("status-filter-menu");
+    const search = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+    Array.from(tableBody.querySelectorAll("tr")).forEach(function (row) {
+      const program = (row.dataset.program || "").trim();
+      const status = (row.dataset.status || "").trim();
+      const text = row.textContent.toLowerCase();
+
+      const matchProgram = !selectedPrograms || selectedPrograms.includes(program);
+      const matchStatus = !selectedStatuses || selectedStatuses.includes(status);
+      const matchSearch = !search || text.includes(search);
+
+      row.hidden = !(matchProgram && matchStatus && matchSearch);
+    });
+  }
+
+  // Handle "All" checkbox toggling
+  function setupAllCheckbox(menuId, cbClass) {
+    const allBox = document.querySelector("#" + menuId + " input[value='all']");
+    const others = Array.from(document.querySelectorAll("." + cbClass + ":not([value='all'])"));
+
+    allBox.addEventListener("change", function () {
+      others.forEach(cb => cb.checked = false);
+      applyFilters();
+    });
+
+    others.forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        if (this.checked) allBox.checked = false;
+        if (others.every(o => !o.checked)) allBox.checked = true;
+        applyFilters();
+      });
+    });
+  }
+
+  setupAllCheckbox("program-filter-menu", "program-filter-cb");
+  setupAllCheckbox("status-filter-menu", "status-filter-cb");
+
+  if (searchInput) searchInput.addEventListener("input", applyFilters);
 }
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1770,7 +1770,7 @@ button,
   background: var(--box);
 }
 
-.box h2 + p + h2 {
+.box h2+p+h2 {
   margin-top: 22px;
 }
 
@@ -1881,24 +1881,25 @@ button,
   font-weight: 500;
   line-height: 1.2;
 }
+
 .question-choice-select-short {
-    height: 42px !important;
-    min-height: 42px !important;
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
-  }
+  height: 42px !important;
+  min-height: 42px !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
 
 .question-choice-card-align-select {
-    gap: 8px;
-  }
+  gap: 8px;
+}
 
 .question-choice-card-align-select .question-choice-text {
-    margin-top: 2px;
-  }
-  
+  margin-top: 2px;
+}
+
 .question-choice-card-align-select select {
-    margin-top: 24px;
-  }
+  margin-top: 24px;
+}
 
 .question-choice-text-compact {
   font-size: 19px;
@@ -1966,7 +1967,7 @@ button,
   padding-top: 56px;
 }
 
-body[data-require-admin-auth] .admin-layout > .content-card {
+body[data-require-admin-auth] .admin-layout>.content-card {
   width: min(1230px, calc(100% - 32px));
   max-width: 1230px;
   margin-left: -24px;
@@ -2402,12 +2403,29 @@ body[data-require-admin-auth] .admin-layout > .content-card {
   background: linear-gradient(180deg, var(--button), var(--button-dark));
 }
 
-.fill-a { width: 72%; }
-.fill-b { width: 48%; }
-.fill-c { width: 35%; }
-.fill-d { width: 68%; }
-.fill-e { width: 52%; }
-.fill-f { width: 44%; }
+.fill-a {
+  width: 72%;
+}
+
+.fill-b {
+  width: 48%;
+}
+
+.fill-c {
+  width: 35%;
+}
+
+.fill-d {
+  width: 68%;
+}
+
+.fill-e {
+  width: 52%;
+}
+
+.fill-f {
+  width: 44%;
+}
 
 table {
   width: 100%;
@@ -3874,5 +3892,51 @@ body.application-empty-page {
     font-size: 15px;
     padding: 12px 6px;
   }
-  
+
+}
+
+/* Checkbox filter dropdown in table header */
+.th-filter-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.th-filter-btn {
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.th-filter-btn:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.th-filter-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.th-filter-menu label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
 }

@@ -2,7 +2,7 @@
 <div class="admin-toolbar scholars-toolbar evaluation-toolbar">
   <div class="search-field">
     <label class="sr-only" for="evaluation-search">Search applicants</label>
-    <input id="evaluation-search" type="search" placeholder="Search">
+    <input id="evaluation-search" type="search" placeholder="Search by name...">
   </div>
 
   <div class="evaluation-toolbar-actions">
@@ -10,7 +10,7 @@
       type="button"
       class="button-outline filter-button add-student-button"
       id="open-add-student-modal">
-      Add Application
+      Add Student
     </button>
 
     <div class="filter-dropdown">
@@ -46,16 +46,62 @@
       <tr>
         <th>Applicant ID</th>
         <th>Full Name</th>
+        <th>Program</th>
         <th>GWA</th>
-        <th>Annual Income</th>
-        <th>Action</th>
+        <th>Status</th>
       </tr>
     </thead>
-    <tbody id="evaluation-table-body"></tbody>
+    <tbody id="evaluation-table-body">
+      <?php
+      include_once 'conn.php';
+      $stmt = $dbconn->query('
+                SELECT
+                    a.application_id,
+                    s.first_name,
+                    s.last_name,
+                    a.program,
+                    a.gwa,
+                    a.application_status
+                FROM application a
+                JOIN student s ON a.student_id = s.student_id
+                ORDER BY a.submitted_at DESC
+            ');
+
+      $apps = $stmt->fetch_all(MYSQLI_ASSOC);
+
+      if (count($apps) === 0) {
+        echo '<tr><td colspan="5">No applications found.</td></tr>';
+      }
+
+      foreach ($apps as $app) {
+        $id     = $app['application_id'];
+        $name   = htmlspecialchars($app['last_name'] . ', ' . $app['first_name']);
+        $prog   = htmlspecialchars($app['program']);
+        $gwa    = htmlspecialchars($app['gwa']);
+        $status = htmlspecialchars($app['application_status']);
+
+        // data attributes are used by the client-side filter
+        echo "
+                <tr onclick='viewApplicant($id)' style='cursor:pointer;'
+                    data-name='" . strtolower($app['last_name'] . ' ' . $app['first_name']) . "'
+                    data-status='$status'
+                    data-program='$prog'>
+                    <td>$id</td>
+                    <td>$name</td>
+                    <td>$prog</td>
+                    <td>$gwa</td>
+                    <td>$status</td>
+                </tr>
+                ";
+      }
+      ?>
+    </tbody>
   </table>
   <p class="table-empty-state" id="evaluation-empty-state" hidden>No applicants match the current search or filter.</p>
 </div>
-
+</div>
+</div>
+</div>
 
 <div class="evaluation-modal" id="evaluation-modal" hidden>
   <div class="evaluation-modal-backdrop" data-close-modal></div>
@@ -136,3 +182,8 @@
     </div>
   </div>
 </div>
+
+<script src="script.js"></script>
+</body>
+
+</html>

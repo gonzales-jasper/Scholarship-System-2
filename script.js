@@ -2114,7 +2114,7 @@ function setupAdminLoginForm() {
       displayName: matchedAdmin.displayName || titleCase(username.replace(/[._-]+/g, " ")) || "Admin"
     });
 
-    window.location.href = "admin-dashboard.html";
+    window.location.href = "admin.html";
   });
 }
 
@@ -2131,7 +2131,8 @@ function requireAdminAuthIfNeeded() {
 function setupAdminProfileUi() {
   const host = document.querySelector("[data-admin-profile-host]");
   const admin = getCurrentAdmin();
-
+  console.log("Host found:", host);   // Check if the div exists
+  console.log("Admin found:", admin);
   if (!host || !admin) {
     return;
   }

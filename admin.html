@@ -10,7 +10,7 @@
   <script src="script.js"></script>
 </head>
 
-<body>
+<body data-require-admin-auth>
   <div class="page admin-page">
     <div class="profile-shell" data-admin-profile-host></div>
     <div class="admin-layout">
@@ -25,16 +25,17 @@
         </nav>
       </div>
 
-      <div class="card content-card" id="main-content">
-      </div>
-
-      <script>
-        $(document).ready(function () {
-          loadPageAdmin("admin-dashboard.php");
-        });
-      </script>
+      <div class="card content-card" id="main-content"> </div>
     </div>
+    <div id="bg-modal" onclick="closeModal()" style="display:none;"></div>
+    <div id="modal" style="display:none;"></div>
   </div>
+
+  <script>
+    $(document).ready(function () {
+      loadPageAdmin("admin-dashboard.php");
+    });
+  </script>
 </body>
 
 </html>

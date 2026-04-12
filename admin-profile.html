@@ -1,96 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Profile | Scholarship Portal</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="admin-profile-page" data-require-admin-auth>
-  <div class="page admin-page">
-    <div class="profile-shell" data-admin-profile-host></div>
-    <div class="admin-layout">
-      <div class="card sidebar-card">
-        <h2>Menu</h2>
-        <nav class="nav-list">
-          <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
-          <a class="nav-link" href="admin-students.html">List of Students</a>
-          <a class="nav-link active" href="admin-evaluation.html">Applicant Evaluation</a>
-          <a class="nav-link" href="admin-scholars.html">Existing Scholars</a>
-        </nav>
-      </div>
-
-      <div class="card content-card profile-page-card">
-        <div class="profile-hero">
-          <div>
-            <h1 id="profile-page-title">Profile | Krizzia Keith Garcia</h1>
-            <p class="profile-subtitle" id="profile-page-subtitle">Applicant details and supporting background for scholarship review.</p>
-          </div>
-          <div class="profile-hero-badges">
-            <div class="profile-hero-badge">
-              <span>Applicant ID</span>
-              <strong data-field="applicantId">1004</strong>
-            </div>
-            <div class="profile-hero-badge">
-              <span>Status</span>
-              <strong data-field="status">Pending Review</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="profile-layout">
-          <aside class="profile-tabs">
-            <a href="#personal">Personal Information</a>
-            <a href="#family">Family Background</a>
-            <a href="#education">Education</a>
-          </aside>
-
-          <div class="profile-sections">
-            <section class="profile-section" id="personal">
-              <h2>Personal Information</h2>
-              <div class="info-grid">
-                <p><strong>Student No.:</strong> <span data-field="studentNumber">2024-001</span></p>
-                <p><strong>Last Name:</strong> <span data-field="lastName">Garcia</span></p>
-                <p><strong>First Name:</strong> <span data-field="firstName">Krizzia Keith</span></p>
-                <p><strong>Middle Name:</strong> <span data-field="middleName">Luna</span></p>
-                <p><strong>Program:</strong> <span data-field="program">BSIT</span></p>
-              </div>
-            </section>
-
-            <section class="profile-section" id="family">
-              <h2>Family Background</h2>
-              <div class="info-grid">
-                <p><strong>Father:</strong> <span data-field="father">xqtrv nplok</span></p>
-                <p><strong>Mother:</strong> <span data-field="mother">zmkia wreop</span></p>
-                <p><strong>Occupation:</strong> <span data-field="occupation">plmno qzxrt / vbeui</span></p>
-                <p><strong>Annual Income:</strong> <span data-field="familyIncome">100,000</span></p>
-                <p><strong>Household Members:</strong> <span data-field="household">5</span></p>
-                <p><strong>Address:</strong> <span data-field="address">Malolos, Bulacan</span></p>
-              </div>
-            </section>
-
-            <section class="profile-section" id="education">
-              <h2>Education</h2>
-              <div class="info-grid">
-                <p><strong>College:</strong> <span data-field="educationCollege">CICT</span></p>
-                <p><strong>Year Level:</strong> <span data-field="yearLevel">1st Year</span></p>
-                <p><strong>GWA:</strong> <span data-field="educationGwa">1.75</span></p>
-                <p><strong>Enrollment Status:</strong> <span data-field="enrollment">Enrolled</span></p>
-                <p><strong>Current Scholarship:</strong> <span data-field="scholarship">None</span></p>
-                <p><strong>Application Status:</strong> <span data-field="applicationStatus">Pending Review</span></p>
-              </div>
-            </section>
-          </div>
-        </div>
-
-        <div class="actions top-gap profile-actions">
-          <button type="button" id="profile-approve-button">Approve</button>
-          <button type="button" class="muted-button" id="profile-reject-button">Reject</button>
-          <a class="button-link light-button" href="admin-evaluation.html">Go Back</a>
-        </div>
-      </div>
+<div class="profile-hero">
+  <div>
+    <h1 id="profile-page-title">Profile | Krizzia Keith Garcia</h1>
+    <p class="profile-subtitle" id="profile-page-subtitle">Applicant details and supporting background for scholarship
+      review.</p>
+  </div>
+  <div class="profile-hero-badges">
+    <div class="profile-hero-badge">
+      <span>Applicant ID</span>
+      <strong data-field="applicantId">1004</strong>
+    </div>
+    <div class="profile-hero-badge">
+      <span>Status</span>
+      <strong data-field="status">Pending Review</strong>
     </div>
   </div>
-  <script src="script.js"></script>
-</body>
-</html>
+</div>
+
+<div class="profile-layout">
+  <aside class="profile-tabs">
+    <a href="#personal">Personal Information</a>
+    <a href="#family">Family Background</a>
+    <a href="#education">Education</a>
+  </aside>
+
+  <div class="profile-sections">
+    <section class="profile-section" id="personal">
+      <h2>Personal Information</h2>
+      <div class="info-grid">
+        <p><strong>Student No.:</strong> <span data-field="studentNumber">2024-001</span></p>
+        <p><strong>Last Name:</strong> <span data-field="lastName">Garcia</span></p>
+        <p><strong>First Name:</strong> <span data-field="firstName">Krizzia Keith</span></p>
+        <p><strong>Middle Name:</strong> <span data-field="middleName">Luna</span></p>
+        <p><strong>Program:</strong> <span data-field="program">BSIT</span></p>
+      </div>
+    </section>
+
+    <section class="profile-section" id="family">
+      <h2>Family Background</h2>
+      <div class="info-grid">
+        <p><strong>Father:</strong> <span data-field="father">xqtrv nplok</span></p>
+        <p><strong>Mother:</strong> <span data-field="mother">zmkia wreop</span></p>
+        <p><strong>Occupation:</strong> <span data-field="occupation">plmno qzxrt / vbeui</span></p>
+        <p><strong>Annual Income:</strong> <span data-field="familyIncome">100,000</span></p>
+        <p><strong>Household Members:</strong> <span data-field="household">5</span></p>
+        <p><strong>Address:</strong> <span data-field="address">Malolos, Bulacan</span></p>
+      </div>
+    </section>
+
+    <section class="profile-section" id="education">
+      <h2>Education</h2>
+      <div class="info-grid">
+        <p><strong>College:</strong> <span data-field="educationCollege">CICT</span></p>
+        <p><strong>Year Level:</strong> <span data-field="yearLevel">1st Year</span></p>
+        <p><strong>GWA:</strong> <span data-field="educationGwa">1.75</span></p>
+        <p><strong>Enrollment Status:</strong> <span data-field="enrollment">Enrolled</span></p>
+        <p><strong>Current Scholarship:</strong> <span data-field="scholarship">None</span></p>
+        <p><strong>Application Status:</strong> <span data-field="applicationStatus">Pending Review</span></p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="actions top-gap profile-actions">
+  <button type="button" id="profile-approve-button">Approve</button>
+  <button type="button" class="muted-button" id="profile-reject-button">Reject</button>
+  <a class="button-link light-button" onclick="loadPageAdmin('admin-evaluation.php')">Go Back</a>
+</div>

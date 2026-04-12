@@ -6,11 +6,11 @@
   </div>
 
   <div class="evaluation-toolbar-actions">
-    <button
+    <button onclick="openAddModal()"
       type="button"
       class="button-outline filter-button add-student-button"
       id="open-add-student-modal">
-      Add Student
+      Add Application
     </button>
 
     <div class="filter-dropdown">
@@ -99,91 +99,3 @@
   </table>
   <p class="table-empty-state" id="evaluation-empty-state" hidden>No applicants match the current search or filter.</p>
 </div>
-</div>
-</div>
-</div>
-
-<div class="evaluation-modal" id="evaluation-modal" hidden>
-  <div class="evaluation-modal-backdrop" data-close-modal></div>
-  <section class="evaluation-modal-dialog" aria-labelledby="evaluation-modal-title" aria-modal="true" role="dialog">
-    <div class="evaluation-modal-topbar">
-      <h2 id="evaluation-modal-title">Student Information</h2>
-      <a class="button-link button-outline" id="modal-profile-link" href="admin-profile.html?applicant=1004">View Full Profile</a>
-    </div>
-
-    <div class="evaluation-modal-body">
-      <div class="evaluation-modal-frame">
-        <div class="evaluation-modal-grid">
-          <div class="evaluation-modal-info-card">
-            <span class="modal-info-label">Applicant ID</span>
-            <span class="modal-info-value" data-modal-field="applicantId">1004</span>
-          </div>
-          <div class="evaluation-modal-info-card">
-            <span class="modal-info-label">Student No.</span>
-            <span class="modal-info-value" data-modal-field="studentNumber">2024-001</span>
-          </div>
-          <div class="evaluation-modal-info-card">
-            <span class="modal-info-label">Last Name</span>
-            <span class="modal-info-value" data-modal-field="lastName">Garcia</span>
-          </div>
-          <div class="evaluation-modal-info-card">
-            <span class="modal-info-label">First Name</span>
-            <span class="modal-info-value" data-modal-field="firstName">Krizzia Keith</span>
-          </div>
-          <div class="evaluation-modal-info-card">
-            <span class="modal-info-label">Middle Name</span>
-            <span class="modal-info-value" data-modal-field="middleName">Luna</span>
-          </div>
-          <div class="evaluation-modal-info-card">
-            <span class="modal-info-label">Program</span>
-            <span class="modal-info-value" data-modal-field="program">BSIT</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="evaluation-modal-actions">
-      <button type="button" id="approve-button">Approve</button>
-      <button type="button" class="muted-button" id="decline-button">Reject</button>
-      <button type="button" class="button-link button-outline" id="close-modal-button">Close</button>
-    </div>
-  </section>
-</div>
-
-<div class="student-form-modal" id="student-form-modal" hidden>
-  <div class="student-form-modal-backdrop" data-close-add-student-modal></div>
-  <div
-    class="student-form-modal-dialog student-form-modal-dialog-plain"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Pending students list">
-    <div class="card pending-students-modal-panel">
-      <div class="student-form-modal-topbar">
-        <div>
-          <h2>Pending Students</h2>
-        </div>
-      </div>
-
-      <div class="table-card" aria-label="Pending students table">
-        <table id="pending-students-table">
-          <thead>
-            <tr>
-              <th>Applicant ID</th>
-              <th>Student No.</th>
-              <th>Full Name</th>
-              <th>Program</th>
-              <th>GWA</th>
-            </tr>
-          </thead>
-          <tbody id="pending-students-selection-body"></tbody>
-        </table>
-        <p class="table-empty-state" id="pending-students-empty-state" hidden>No pending students available.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="script.js"></script>
-</body>
-
-</html>

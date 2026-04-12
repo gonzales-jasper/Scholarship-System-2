@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmation | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="form-page application-empty-page student-side-page" data-require-auth>
+  <div class="student-side-shell">
+    <header class="alt-home-header">
+      <div class="alt-home-header-actions">
+        <nav class="alt-home-nav" aria-label="Student sections">
+          <a href="student-home.html">Home</a>
+          <a href="student-profile.html" data-student-profile-link>Profile</a>
+          <a href="student-status.html">Status</a>
+          <a class="alt-home-nav-icon-link" href="student-profile.html" data-student-profile-link aria-label="Profile">
+            <img src="user_icon.png" alt="" class="alt-home-nav-icon">
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page page-center student-side-content">
+      <div class="card small-card form-panel empty-application-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
+        <h1 id="confirmation-title">Application Submitted</h1>
+        <p class="text">Your scholarship application has been submitted successfully.</p>
+        <div class="actions">
+          <a class="button-link back-pill-button" href="student-home.html">Back</a>
+          <a class="button-link" href="student-application-view.html">View Application Form</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

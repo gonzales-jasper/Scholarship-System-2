@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>No Application Found | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-require-auth class="application-empty-page student-side-page">
+  <div class="student-side-shell">
+    <header class="alt-home-header">
+      <div class="alt-home-header-actions">
+        <nav class="alt-home-nav" aria-label="Student home sections">
+          <a href="student-home.html">Home</a>
+          <a href="student-profile.html" data-student-profile-link>Profile</a>
+          <a href="student-status.html">Status</a>
+          <a class="alt-home-nav-icon-link" href="student-profile.html" data-student-profile-link aria-label="Profile">
+            <img src="user_icon.png" alt="" class="alt-home-nav-icon">
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page page-center student-side-content" data-empty-application-modal hidden>
+      <div class="card small-card form-panel empty-application-dialog" role="dialog" aria-modal="true" aria-labelledby="empty-application-title">
+        <h1 id="empty-application-title">No Application Found</h1>
+        <p class="text">No submitted application form was found for this account yet.</p>
+        <div class="actions">
+          <a href="student-home.html" data-close-empty-modal>Back to home</a>
+          <a class="button-link" href="user-screening.html">Start screening</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page student-side-page">
+  <div class="student-side-shell">
+    <header class="alt-home-header">
+      <div class="alt-home-header-actions">
+        <nav class="alt-home-nav" aria-label="Student home sections">
+          <a href="student-home.html">Home</a>
+          <a href="student-profile.html" data-student-profile-link>Profile</a>
+          <a href="student-status.html">Status</a>
+          <a class="alt-home-nav-icon-link" href="student-profile.html" data-student-profile-link aria-label="Profile">
+            <img src="user_icon.png" alt="" class="alt-home-nav-icon">
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page page-center student-side-content">
+      <div class="card small-card">
+        <h1>Register</h1>
+        <p class="text">Create a student account first before continuing to the scholarship screening form.</p>
+
+        <form id="register-form">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="Choose a username" required>
+
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Create password" required>
+
+          <label>Confirm Password</label>
+          <input type="password" name="confirmPassword" placeholder="Confirm password" required>
+
+          <div class="actions">
+            <a href="login.html">Back to login</a>
+            <button type="submit">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

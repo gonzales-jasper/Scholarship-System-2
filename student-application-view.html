@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Form | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-require-auth class="application-view-page student-side-page">
+  <div class="student-side-shell">
+    <header class="alt-home-header">
+      <div class="alt-home-header-actions">
+        <nav class="alt-home-nav" aria-label="Student home sections">
+          <a href="student-home.html">Home</a>
+          <a href="student-profile.html" data-student-profile-link>Profile</a>
+          <a href="student-status.html">Status</a>
+          <a class="alt-home-nav-icon-link" href="student-profile.html" data-student-profile-link aria-label="Profile">
+            <img src="user_icon.png" alt="" class="alt-home-nav-icon">
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page admin-page student-side-content">
+      <div class="profile-shell" data-profile-host></div>
+      <div class="card content-card profile-page-card application-view-card">
+        <div class="profile-hero">
+          <div>
+            <h1 data-application-view-title>Application Form</h1>
+            <p class="profile-subtitle" data-application-view-subtitle>
+              Here is the submitted application form currently saved for your account.
+            </p>
+          </div>
+        </div>
+
+        <div data-application-view-content></div>
+
+        <div class="actions top-gap profile-actions">
+          <a class="button-link light-button" href="student-home.html">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Students | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="embedded-admin-form-page pending-students-modal-page">
+  <h1>Pending Students</h1>
+
+  <div class="table-card" aria-label="Pending students table">
+    <table id="pending-students-table">
+      <thead>
+        <tr>
+          <th>Applicant ID</th>
+          <th>Student No.</th>
+          <th>Full Name</th>
+          <th>Program</th>
+          <th>GWA</th>
+        </tr>
+      </thead>
+      <tbody id="pending-students-selection-body"></tbody>
+    </table>
+    <p class="table-empty-state" id="pending-students-empty-state" hidden>No pending students available.</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

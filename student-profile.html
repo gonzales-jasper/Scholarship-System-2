@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="application-view-page student-profile-page student-side-page" data-require-auth>
+  <div class="student-side-shell">
+    <header class="alt-home-header">
+      <div class="alt-home-header-actions">
+        <nav class="alt-home-nav" aria-label="Student home sections">
+          <a href="student-home.html">Home</a>
+          <a class="is-active" href="student-profile.html" data-student-profile-link>Profile</a>
+          <a href="student-status.html">Status</a>
+          <a class="alt-home-nav-icon-link is-active" href="student-profile.html" aria-label="Open user menu">
+            <img src="user_icon.png" alt="" class="alt-home-nav-icon">
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page admin-page student-side-content">
+      <div class="card content-card profile-page-card">
+      <div class="profile-hero">
+        <div>
+          <h1 id="student-profile-page-title">Profile | Student Name</h1>
+          <p class="profile-subtitle" id="student-profile-page-subtitle">Submitted scholarship details will appear here.</p>
+        </div>
+      </div>
+
+      <div class="profile-layout">
+        <aside class="profile-tabs">
+          <a href="#student-personal">Personal Information</a>
+          <a href="#student-family">Family Background</a>
+          <a href="#student-education">Education</a>
+        </aside>
+
+        <div class="profile-sections">
+          <section class="profile-section" id="student-personal">
+            <h2>Personal Information</h2>
+            <div class="info-grid">
+              <p><strong>Student No.:</strong> <span data-student-profile-field="studentNumber">Not provided</span></p>
+              <p><strong>Last Name:</strong> <span data-student-profile-field="lastName">Not provided</span></p>
+              <p><strong>First Name:</strong> <span data-student-profile-field="firstName">Not provided</span></p>
+              <p><strong>Middle Name:</strong> <span data-student-profile-field="middleName">Not provided</span></p>
+              <p><strong>Program:</strong> <span data-student-profile-field="program">Not provided</span></p>
+            </div>
+          </section>
+
+          <section class="profile-section" id="student-family">
+            <h2>Family Background</h2>
+            <div class="info-grid">
+              <p><strong>Father:</strong> <span data-student-profile-field="father">Not provided</span></p>
+              <p><strong>Mother:</strong> <span data-student-profile-field="mother">Not provided</span></p>
+              <p><strong>Father's Occupation:</strong> <span data-student-profile-field="fatherOccupation">Not provided</span></p>
+              <p><strong>Mother's Occupation:</strong> <span data-student-profile-field="motherOccupation">Not provided</span></p>
+              <p><strong>Father's Annual Income:</strong> <span data-student-profile-field="fatherIncome">Not provided</span></p>
+              <p><strong>Mother's Annual Income:</strong> <span data-student-profile-field="motherIncome">Not provided</span></p>
+              <p><strong>Household Members:</strong> <span data-student-profile-field="household">Not provided</span></p>
+              <p><strong>Address:</strong> <span data-student-profile-field="address">Not provided</span></p>
+            </div>
+          </section>
+
+          <section class="profile-section" id="student-education">
+            <h2>Education</h2>
+            <div class="info-grid">
+              <p><strong>College:</strong> <span data-student-profile-field="educationCollege">Not provided</span></p>
+              <p><strong>Year Level:</strong> <span data-student-profile-field="yearLevel">Not provided</span></p>
+              <p><strong>GWA:</strong> <span data-student-profile-field="educationGwa">Not provided</span></p>
+              <p><strong>Enrollment Status:</strong> <span data-student-profile-field="enrollment">Not provided</span></p>
+              <p><strong>Current Scholarship:</strong> <span data-student-profile-field="scholarship">None</span></p>
+              <p><strong>Application Status:</strong> <span data-student-profile-field="applicationStatus">Pending Review</span></p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="actions top-gap profile-actions">
+        <a class="button-link light-button" href="student-home.html">Back</a>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

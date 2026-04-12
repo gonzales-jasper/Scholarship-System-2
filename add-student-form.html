@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Student Form | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="embedded-admin-form-page">
+  <main class="embedded-admin-form-shell">
+    <section class="card embedded-admin-form-card">
+      <form id="add-student-form" class="embedded-admin-student-form">
+        <div class="student-info-panels" id="student-info">
+          <section class="student-info-section">
+            <h3>Student's Information</h3>
+            <div class="reference-form-grid">
+              <div class="reference-form-row full-span">
+                <label for="add-student-number">Student Number</label>
+                <input id="add-student-number" type="text" name="studentNumber" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-last-name">Last Name</label>
+                <input id="add-last-name" type="text" name="lastName" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-first-name">First Name</label>
+                <input id="add-first-name" type="text" name="firstName" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-middle-name">Middle Name</label>
+                <input id="add-middle-name" type="text" name="middleName">
+              </div>
+              <div class="reference-form-row">
+                <label for="add-suffix">Suffix</label>
+                <input id="add-suffix" type="text" name="suffix">
+              </div>
+              <div class="reference-form-row">
+                <label for="add-civil-status">Civil Status</label>
+                <select id="add-civil-status" name="civilStatus" required>
+                  <option value="">Select</option>
+                  <option>Single</option>
+                  <option>Married</option>
+                </select>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-gender">Gender</label>
+                <select id="add-gender" name="gender" required>
+                  <option value="">Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-dob">Date of Birth</label>
+                <input id="add-dob" type="date" name="dateOfBirth" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-place-of-birth">Place of Birth</label>
+                <input id="add-place-of-birth" type="text" name="placeOfBirth" required>
+              </div>
+            </div>
+          </section>
+
+          <section class="student-info-section">
+            <h3>Student's Address</h3>
+            <div class="reference-form-grid">
+              <div class="reference-form-row full-span">
+                <label for="add-street-address">Street &amp; House No.</label>
+                <input id="add-street-address" type="text" name="streetAddress" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-region">Region</label>
+                <select id="add-region" name="region" required>
+                  <option value="">Select</option>
+                </select>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-province">Province</label>
+                <select id="add-province" name="province" required>
+                  <option value="">Select region first</option>
+                </select>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-city">City</label>
+                <select id="add-city" name="city" required>
+                  <option value="">Select province first</option>
+                </select>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-barangay">Barangay</label>
+                <select id="add-barangay" name="barangay" required>
+                  <option value="">Select city first</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="student-info-section">
+            <h3>Student's Contact Details</h3>
+            <div class="reference-form-grid">
+              <div class="reference-form-row full-span">
+                <label for="add-telephone-number">Telephone Number</label>
+                <input id="add-telephone-number" type="tel" name="telephoneNumber">
+              </div>
+              <div class="reference-form-row full-span">
+                <label for="add-mobile-number">Mobile Number</label>
+                <input id="add-mobile-number" type="tel" name="mobileNumber" required>
+              </div>
+              <div class="reference-form-row full-span">
+                <label for="add-email">Email Address</label>
+                <input id="add-email" type="email" name="email" required>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="box" id="education-info">
+          <h2>Education</h2>
+          <div class="reference-form-grid">
+            <div class="reference-form-row">
+              <label for="add-college">College</label>
+              <select id="add-college" name="college" required>
+                <option value="">Select</option>
+                <option>CICT</option>
+                <option>COE</option>
+                <option>CTE</option>
+                <option>CBA</option>
+              </select>
+            </div>
+            <div class="reference-form-row">
+              <label for="add-program">Program</label>
+              <select id="add-program" name="program" required>
+                <option value="">Select</option>
+                <option>BSIT</option>
+                <option>BSCE</option>
+                <option>BSED</option>
+                <option>BSBA</option>
+              </select>
+            </div>
+            <div class="reference-form-row">
+              <label for="add-year-level">Year Level</label>
+              <select id="add-year-level" name="yearLevel" required>
+                <option value="">Select</option>
+                <option>1st Year</option>
+                <option>2nd Year</option>
+                <option>3rd Year</option>
+                <option>4th Year</option>
+              </select>
+            </div>
+            <div class="reference-form-row">
+              <label for="add-specialization">Specialization</label>
+              <input id="add-specialization" type="text" name="specialization" required>
+            </div>
+            <div class="reference-form-row">
+              <label for="add-enrolled">Enrolled?</label>
+              <select id="add-enrolled" name="enrolled" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="reference-form-row">
+              <label for="add-gwa">GWA</label>
+              <input id="add-gwa" type="number" name="gwa" step="0.01" required>
+            </div>
+            <div class="reference-form-row full-span">
+              <label for="add-status">Status</label>
+              <select id="add-status" name="status" required>
+                <option value="">Select</option>
+                <option>Accepted</option>
+                <option>Pending</option>
+                <option>Rejected</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="box" id="family-info">
+          <h2>Family Background</h2>
+          <div class="family-form-grid">
+            <div class="family-parent-column">
+              <div class="reference-form-row">
+                <label for="add-mother-name">Mother's Name</label>
+                <input id="add-mother-name" type="text" name="motherName" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-mother-occupation">Mother's Occupation</label>
+                <input id="add-mother-occupation" type="text" name="motherOccupation" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-mother-income">Mother's Annual Income</label>
+                <input id="add-mother-income" type="number" name="motherIncome" required>
+              </div>
+            </div>
+            <div class="family-parent-column">
+              <div class="reference-form-row">
+                <label for="add-father-name">Father's Name</label>
+                <input id="add-father-name" type="text" name="fatherName" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-father-occupation">Father's Occupation</label>
+                <input id="add-father-occupation" type="text" name="fatherOccupation" required>
+              </div>
+              <div class="reference-form-row">
+                <label for="add-father-income">Father's Annual Income</label>
+                <input id="add-father-income" type="number" name="fatherIncome" required>
+              </div>
+            </div>
+            <div class="reference-form-row">
+              <label for="add-siblings">Siblings (Optional)</label>
+              <input id="add-siblings" type="text" name="siblings">
+            </div>
+            <div class="reference-form-row">
+              <label for="add-sibling-education-level">Sibling's Education Level</label>
+              <input id="add-sibling-education-level" type="text" name="siblingEducationLevel">
+            </div>
+          </div>
+        </div>
+
+        <div class="box" id="other-info">
+          <h2>Others</h2>
+          <div class="question-choice-grid">
+            <div class="question-choice-card">
+              <p class="question-choice-text">Are you solo parent?</p>
+              <select name="soloParent" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="question-choice-card">
+              <p class="question-choice-text">Are you child of a solo parent?</p>
+              <select name="childOfSoloParent" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="question-choice-card">
+              <p class="question-choice-text">Are you member of 4Ps?</p>
+              <select name="fourPsMember" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="question-choice-card">
+              <p class="question-choice-text">Are you an Indigenous People?</p>
+              <select class="question-choice-select-match" name="indigenous" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="question-choice-card question-choice-card-align-select">
+              <p class="question-choice-text">Are you a Student with Special Needs?</p>
+              <select class="question-choice-select-short" name="pwd" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="question-choice-card">
+              <p class="question-choice-text question-choice-text-compact">Are you located in a Geographically Isolated and Disadvantaged Area (GIDA)?</p>
+              <select class="question-choice-select-compact" name="currentScholarship" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions embedded-admin-form-actions">
+          <button type="button" class="button-link back-pill-button" data-close-add-student-form>Cancel</button>
+          <button type="submit">Save Student</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

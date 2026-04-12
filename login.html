@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login | Scholarship Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page student-side-page">
+  <div class="student-side-shell">
+    <header class="alt-home-header">
+      <div class="alt-home-header-actions">
+        <nav class="alt-home-nav" aria-label="Student sections">
+          <a href="student-home.html">Home</a>
+          <a href="student-profile.html" data-student-profile-link>Profile</a>
+          <a href="student-status.html">Status</a>
+          <a class="alt-home-nav-icon-link" href="student-profile.html" data-student-profile-link aria-label="Profile">
+            <img src="user_icon.png" alt="" class="alt-home-nav-icon">
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page page-center student-side-content">
+      <div class="card small-card">
+        <h1>Login</h1>
+
+        <form id="login-form">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="Enter username" required>
+
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Enter password" required>
+
+          <div class="actions">
+            <a href="register.html">Create account</a>
+            <button type="submit">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

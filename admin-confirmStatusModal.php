@@ -1,5 +1,5 @@
 <?php
-include_once 'conn.php';
+include_once 'connAdmin.php';
 
 $app_id    = intval($_GET['application_id'] ?? 0);
 $newStatus = $_GET['status'] ?? '';

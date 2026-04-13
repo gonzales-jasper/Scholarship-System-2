@@ -1,5 +1,5 @@
 <?php
-include_once 'conn.php';
+include_once 'connAdmin.php';
 
 $application_id = isset($_GET['application_id']) ? (int)$_GET['application_id'] : 0;
 
@@ -121,7 +121,7 @@ if (!$student) {
   </button>
   <button type="button"
     class="applicant-btn applicant-btn--close"
-    onclick="closeAdminModal()">
-    Close
+    onclick="loadPageAdmin('admin-evaluation.php')">
+    Go Back
   </button>
 </div>

@@ -1,5 +1,5 @@
 <?php
-include_once 'conn.php';
+include_once 'connAdmin.php';
 
 $id = intval($_GET['application_id'] ?? 0);
 

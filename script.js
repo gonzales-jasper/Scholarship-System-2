@@ -21,7 +21,7 @@ function loadPageAdmin(url, element) {
 
 function viewApplicant(applicationId) {
   $.ajax({
-    url: "viewApplicant.php",
+    url: "admin-viewApplicant.php",
     data: { application_id: applicationId },
     success: function (response) {
       $("#modal").html(response).fadeIn(300);
@@ -42,7 +42,7 @@ function loadFullProfile(studentId) {
 
 function updateStatus(applicationId, status) {
   $.ajax({
-    url: "updateStatus.php",
+    url: "admin-updateStatusProcess.php",
     method: 'post',
     data: { application_id: applicationId, status: status },
     success: function (response) {
@@ -54,7 +54,7 @@ function updateStatus(applicationId, status) {
 
 function confirmStatus(applicationId, newStatus) {
   $.ajax({
-    url: 'confirmStatus.php',
+    url: 'admin-confirmStatusModal.php',
     data: { application_id: applicationId, status: newStatus },
     success: function (response) {
       $('#modal').html(response).fadeIn(300);
@@ -65,10 +65,68 @@ function confirmStatus(applicationId, newStatus) {
 
 function openAddModal() {
   $.ajax({
-    url: 'addApplication.php',
+    url: 'admin-addApplicationModal.php',
     success: function (response) {
       $("#modal").html(response).fadeIn(300);
       $("#bg-modal").fadeIn(300);
+    }
+  });
+}
+function handleStudentSelect(selectEl) {
+  var opt = selectEl.options[selectEl.selectedIndex];
+  var display = document.getElementById('selected-student-display');
+  var nameEl = document.getElementById('selected-student-name');
+  var noEl = document.getElementById('selected-student-no');
+
+  if (!display || !nameEl || !noEl) return;
+
+  if (selectEl.value) {
+    nameEl.textContent = opt.getAttribute('data-lname') + ', ' + opt.getAttribute('data-fname');
+    noEl.textContent = opt.getAttribute('data-no');
+    display.style.display = 'flex';
+  } else {
+    display.style.display = 'none';
+  }
+}
+
+function submitAdd(e) {
+  e.preventDefault();
+  $.ajax({
+    url: 'admin-addApplicationProcess.php',
+    method: 'POST',
+    data: $(e.target).serialize(),
+    success: function (response) {
+      // process.php returns the result modal HTML directly
+      $('#modal').html(response).fadeIn(300);
+      $('#bg-modal').fadeIn(300);
+      // refresh table in background regardless of result
+      loadPageAdmin('admin-evaluation.php');
+    }
+  });
+}
+
+// step 1 — show confirmation modal
+function deleteApplication(applicationId) {
+  $.ajax({
+    url: 'admin-confirmDeleteModal.php',
+    data: { application_id: applicationId },
+    success: function (response) {
+      $('#modal').html(response).fadeIn(300);
+      $('#bg-modal').fadeIn(300);
+    }
+  });
+}
+
+// step 2 — actually delete
+function confirmedDeleteProcess(applicationId) {
+  $.ajax({
+    url: 'admin-deleteApplicationProcess.php',
+    method: 'POST',
+    data: { application_id: applicationId },
+    success: function (response) {
+      $('#modal').html(response).fadeIn(300);
+      loadPageAdmin('admin-evaluation.php');
+      closeAdminModal();
     }
   });
 }

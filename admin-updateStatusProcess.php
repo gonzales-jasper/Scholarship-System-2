@@ -1,5 +1,5 @@
 <?php
-include_once 'conn.php';
+include_once 'connAdmin.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') exit;
 

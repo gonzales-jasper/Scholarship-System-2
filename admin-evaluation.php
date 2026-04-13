@@ -54,7 +54,7 @@
     </thead>
     <tbody id="evaluation-table-body">
       <?php
-      include_once 'conn.php';
+      include_once 'connAdmin.php';
       $stmt = $dbconn->query('
                 SELECT
                     a.application_id,

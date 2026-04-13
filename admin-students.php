@@ -49,7 +49,7 @@
       </tr>
     </thead>
     <?php
-    include_once 'conn.php';
+    include_once 'connAdmin.php';
     $students = $dbconn->query('SELECT 
       s.student_id, 
       s.student_no, 

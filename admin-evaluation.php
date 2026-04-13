@@ -49,6 +49,7 @@
         <th>Program</th>
         <th>GWA</th>
         <th>Status</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody id="evaluation-table-body">
@@ -61,10 +62,12 @@
                     s.last_name,
                     a.program,
                     a.gwa,
-                    a.application_status
+                    a.application_status,
+                    a.eligibility_status
                 FROM application a
                 JOIN student s ON a.student_id = s.student_id
-                ORDER BY a.submitted_at DESC
+                where a.eligibility_status = "Qualified"
+                 ORDER BY a.academic_year DESC, a.submitted_at DESC
             ');
 
       $apps = $stmt->fetch_all(MYSQLI_ASSOC);
@@ -78,23 +81,35 @@
         $name   = htmlspecialchars($app['last_name'] . ', ' . $app['first_name']);
         $prog   = htmlspecialchars($app['program']);
         $gwa    = htmlspecialchars($app['gwa']);
-        $status = htmlspecialchars($app['application_status']);
+        $status = htmlspecialchars($app['application_status'] ?? 'Pending');
 
-        // data attributes are used by the client-side filter
-        echo "
-                <tr onclick='viewApplicant($id)' style='cursor:pointer;'
-                    data-name='" . strtolower($app['last_name'] . ' ' . $app['first_name']) . "'
-                    data-status='$status'
-                    data-program='$prog'>
-                    <td>$id</td>
-                    <td>$name</td>
-                    <td>$prog</td>
-                    <td>$gwa</td>
-                    <td>$status</td>
-                </tr>
-                ";
-      }
+        $statusClass = match (strtolower($status)) {
+          'approved'  => 'approved',
+          'rejected'  => 'rejected',
+          default     => 'pending'
+        };
       ?>
+        <tr onclick="viewApplicant(<?= $id ?>)" style="cursor:pointer;"
+          data-name="<?= $name ?>"
+          data-status="<?= $status ?>"
+          data-program="<?= $prog ?>">
+          <td><?= $id ?></td>
+          <td><?= $name ?></td>
+          <td><?= $prog ?></td>
+          <td><?= $gwa ?></td>
+          <td><span class="status <?= $statusClass ?>"><?= $status ?></span></td>
+          <td class="evaluation-action-cell">
+            <div class="evaluation-action-group">
+              <button onclick="event.stopPropagation(); viewApplicant(<?= $id ?>)"
+                type="button" class="table-action evaluation-open-button">Review</button>
+              <button onclick="event.stopPropagation(); editApplication(<?= $id ?>)"
+                type="button" class="table-action">Edit</button>
+              <button onclick="event.stopPropagation(); deleteApplication(<?= $id ?>)"
+                type="button" class="table-action evaluation-delete-button">Delete</button>
+            </div>
+          </td>
+        </tr>
+      <?php } ?>
     </tbody>
   </table>
   <p class="table-empty-state" id="evaluation-empty-state" hidden>No applicants match the current search or filter.</p>

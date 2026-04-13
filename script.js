@@ -5,8 +5,8 @@ function loadPageAdmin(url, element) {
     url: url,
 
     success: function (response) {
-
-      $("#main-content").html(response);
+      const cleaned = response.replace(/<script\b[^>]*src[^>]*>([\s\S]*?)<\/script>/gi, '');
+      $("#main-content").html(cleaned);
 
       if (element) {
         $(".nav-link").removeClass("active");
@@ -30,24 +30,48 @@ function viewApplicant(applicationId) {
 
   });
 }
-function closeModal() {
+function closeAdminModal() {
   $("#modal").hide();
   $("#bg-modal").hide();
 }
 
-function loadFullProfile(applicationId) {
+function loadFullProfile(studentId) {
+  closeAdminModal();
+  loadPageAdmin('admin-profile.php?application_id=' + studentId);
+}
+
+function updateStatus(applicationId, status) {
   $.ajax({
-    url: "admin-profile.html",
-    data: { application_id: applicationId },
+    url: "updateStatus.php",
+    method: 'post',
+    data: { application_id: applicationId, status: status },
     success: function (response) {
-      $("#main-content").html(response);
-      closeModal();
-
+      closeAdminModal();
+      loadPageAdmin('admin-evaluation.php');
     }
-
   });
 }
 
+function confirmStatus(applicationId, newStatus) {
+  $.ajax({
+    url: 'confirmStatus.php',
+    data: { application_id: applicationId, status: newStatus },
+    success: function (response) {
+      $('#modal').html(response).fadeIn(300);
+      $('#bg-modal').fadeIn(300);
+    }
+  });
+}
+
+function openAddModal() {
+  $.ajax({
+    url: 'addApplication.php',
+    success: function (response) {
+      $("#modal").html(response).fadeIn(300);
+      $("#bg-modal").fadeIn(300);
+    }
+  });
+}
 
 
 

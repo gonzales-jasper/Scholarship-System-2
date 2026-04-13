@@ -131,6 +131,31 @@ function confirmedDeleteProcess(applicationId) {
   });
 }
 
+function editApplication(applicationId) {
+  $.ajax({
+    url: 'admin-editApplication.php',
+    data: { application_id: applicationId },
+    success: function (response) {
+      $('#modal').html(response).fadeIn(300);
+      $('#bg-modal').fadeIn(300);
+    }
+  });
+}
+
+function submitEditProcess(event) {
+  event.preventDefault();
+  $.ajax({
+    url: 'admin-editApplicationProcess.php',
+    method: 'POST',
+    data: $(event.target).serialize(),
+    success: function (response) {
+      $('#modal').html(response).fadeIn(300);
+      $('#bg-modal').fadeIn(300);
+      loadPageAdmin('admin-evaluation.php');
+    }
+  });
+}
+
 
 
 

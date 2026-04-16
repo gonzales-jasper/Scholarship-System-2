@@ -56,15 +56,28 @@ $statusClass = match (strtolower($status)) {
 
 $isApproved = strtolower($status) === 'accepted';
 $isRejected = strtolower($status) === 'rejected';
+
+// Fetch all applications for this specific student
+$historyResult = mysqli_query($dbconn, "
+    SELECT application_id, academic_year, application_status, submitted_at 
+    FROM application 
+    WHERE student_id = $studentId 
+    ORDER BY submitted_at DESC
+");
 ?>
 
 <div class="applicant-modal-inner">
 
     <div class="applicant-modal-topbar">
         <div>
-            <h2 class="applicant-modal-title">Student Application</h2>
+            <h2 class="applicant-modal-title">Application History</h2>
             <p class="applicant-modal-sub">Application #<?= $id ?> &mdash; <span class="status <?= $statusClass ?>"><?= $status ?></span></p>
         </div>
+        <button type="button"
+            class="applicant-btn applicant-btn--profile"
+            onclick="loadFullProfile(<?= $app['application_id'] ?>)">
+            View Full Profile
+        </button>
     </div>
 
     <div class="applicant-modal-grid">
@@ -90,20 +103,6 @@ $isRejected = strtolower($status) === 'rejected';
         </div>
 
         <div class="applicant-info-card">
-            <span class="applicant-info-label">Sex</span>
-            <span class="applicant-info-value"><?= $sex ?></span>
-        </div>
-
-        <div class="applicant-info-card">
-            <span class="applicant-info-label">Birthdate</span>
-            <span class="applicant-info-value"><?= $birthdate ?></span>
-        </div>
-        <div class="applicant-info-card applicant-info-card--full">
-            <span class="applicant-info-label">Address</span>
-            <span class="applicant-info-value"><?= $address ?></span>
-        </div>
-
-        <div class="applicant-info-card">
             <span class="applicant-info-label">Date Submitted</span>
             <span class="applicant-info-value"><?= $submitted ?></span>
         </div>
@@ -113,23 +112,37 @@ $isRejected = strtolower($status) === 'rejected';
             <span class="applicant-info-value"><?= $app['academic_year'] ?></span>
         </div>
 
+        <div class="applicant-modal-inner">
+            <div class="history-section" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 10px;">Application History</h3>
 
+                <div class="history-list" style="display: flex; flex-direction: column; gap: 8px;">
+                    <?php while ($history = mysqli_fetch_assoc($historyResult)):
+                        $hStatus = htmlspecialchars($history['application_status']);
+                        $hClass = match (strtolower($hStatus)) {
+                            'accepted' => 'accepted',
+                            'rejected' => 'rejected',
+                            default    => 'pending'
+                        };
+                    ?>
+                        <div class="history-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; border-radius: 6px; border-left: 4px solid var(--primary-color, #4a90e2);">
+                            <div>
+                                <strong style="display: block; font-size: 0.9rem;">AY: <?= htmlspecialchars($history['academic_year']) ?></strong>
+                                <small style="color: #666;">Submitted: <?= date('M d, Y', strtotime($history['submitted_at'])) ?></small>
+                            </div>
+                            <span class="status <?= $hClass ?>" style="font-size: 0.8rem;"><?= $hStatus ?></span>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+
+            <div class="applicant-modal-actions">
+            </div>
+        </div>
 
     </div>
 
     <div class="applicant-modal-actions">
-        <button type="button"
-            class="applicant-btn applicant-btn--approve <?= $isApproved ? 'btn-disabled' : '' ?>"
-            onclick="<?= $isApproved ? 'void(0)' : "confirmStatus($id, 'Accepted')" ?>"
-            <?= $isApproved ? 'disabled' : '' ?>>
-            ✓ Accept
-        </button>
-        <button type="button"
-            class="applicant-btn applicant-btn--reject <?= $isRejected ? 'btn-disabled' : '' ?>"
-            onclick="<?= $isRejected ? 'void(0)' : "confirmStatus($id, 'Rejected')" ?>"
-            <?= $isRejected ? 'disabled' : '' ?>>
-            ✕ Reject
-        </button>
         <button type="button"
             class="applicant-btn applicant-btn--close"
             onclick="closeAdminModal()">

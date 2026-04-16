@@ -39,7 +39,7 @@ $studentNo  = htmlspecialchars($app['student_no']);
 $status     = htmlspecialchars($app['application_status'] ?? 'Pending');
 
 $statusClass = match (strtolower($status)) {
-    'approved' => 'accepted',
+    'accepted' => 'accepted',
     'rejected' => 'rejected',
     default    => 'pending'
 };

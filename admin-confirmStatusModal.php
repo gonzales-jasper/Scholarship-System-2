@@ -3,7 +3,7 @@ include_once 'connAdmin.php';
 
 $app_id    = intval($_GET['application_id'] ?? 0);
 $newStatus = $_GET['status'] ?? '';
-$allowed   = ['Approved', 'Rejected'];
+$allowed   = ['Accepted', 'Rejected'];
 
 if (!$app_id || !in_array($newStatus, $allowed)) exit;
 
@@ -17,8 +17,8 @@ $result = $stmt->get_result();
 $studentData = $result->fetch_assoc();
 
 
-$color   = $newStatus === 'Approved' ? '#2d7d42' : '#a3474a';
-$message = $newStatus === 'Approved'
+$color   = $newStatus === 'Accepted' ? '#2d7d42' : '#a3474a';
+$message = $newStatus === 'Accepted'
     ? "Are you sure you want to <strong>approve</strong> " . htmlspecialchars($studentData['first_name']) . ' ' . htmlspecialchars($studentData['last_name']) . " application?"
     : "Are you sure you want to <strong>reject</strong> " . htmlspecialchars($studentData['first_name']) . ' ' . htmlspecialchars($studentData['last_name']) . " application?";
 ?>

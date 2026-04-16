@@ -1,5 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['isAdmin'])) {
+  header("Location: admin-login.php");
+  exit;
+}
+?>
 <div class="content-header students-header">
-  <h1>List of Students</h1>
+  <h1>List of Applicants</h1>
 </div>
 
 <div class="admin-toolbar students-toolbar">
@@ -8,23 +15,34 @@
     <input id="student-search" type="search" placeholder="Search">
   </div>
 
-  <div class="students-toolbar-actions">
+  <button onclick="openAddModal()"
+    type="button"
+    class="button-outline filter-button add-student-button"
+    id="open-add-student-modal">
+    + Add Application
+  </button>
+  <div class="evaluation-toolbar-actions">
+
     <div class="filter-dropdown">
-      <button type="button" class="button-outline filter-button" id="student-filter-button" aria-haspopup="true"
+      <button
+        type="button"
+        class="button-outline filter-button"
+        id="evaluation-filter-button"
+        aria-haspopup="true"
         aria-expanded="false">
         Filter
       </button>
 
-      <div class="filter-menu" id="student-filter-menu" hidden>
+      <div class="filter-menu" id="evaluation-filter-menu" hidden>
         <p class="filter-menu-title">Filter by</p>
-        <div class="filter-type-list" role="group" aria-label="Choose filter type">
-          <button type="button" class="filter-type-button" data-filter-type="college">College</button>
-          <button type="button" class="filter-type-button" data-filter-type="program">Program</button>
-          <button type="button" class="filter-type-button" data-filter-type="status">Status</button>
+        <div class="filter-type-list" role="group" aria-label="Choose applicant filter type">
+          <button type="button" class="filter-type-button" data-evaluation-filter-type="status">Status</button>
+          <button type="button" class="filter-type-button" data-evaluation-filter-type="program">Program</button>
+          <button type="button" class="filter-type-button" data-evaluation-filter-type="gwa">GWA</button>
         </div>
 
-        <label class="sr-only" for="student-filter-value">Choose filter value</label>
-        <select id="student-filter-value" hidden>
+        <label class="sr-only" for="evaluation-filter-value">Choose filter value</label>
+        <select id="evaluation-filter-value" hidden>
           <option value="all">All</option>
         </select>
       </div>
@@ -32,66 +50,84 @@
   </div>
 </div>
 
-<div class="table-card">
-  <table id="students-table">
+<div class="table-card evaluation-table-card" aria-label="Applicant evaluation table">
+  <table>
     <thead>
       <tr>
-        <th>User ID</th>
-        <th>Student No.</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Sex</th>
-        <th>Birthday</th>
-        <th>Address</th>
-        <!--<th>College</th>
-          <th>Program</th>
-          <th>Status</th>-->
+        <th>Student Number</th>
+        <th>Full Name</th>
+        <th>Program</th>
+        <th>GWA</th>
+        <th>Application Status</th>
+        <th>Scholarship Status</th>
+        <th>Action</th>
       </tr>
     </thead>
-    <?php
-    include_once 'connAdmin.php';
-    $students = $dbconn->query('SELECT 
-      s.student_id, 
-      s.student_no, 
-      s.first_name, 
-      s.last_name, 
-      s.sex, 
-      s.birthdate, 
-      s.address
-          FROM student s
-          ORDER BY last_name ASC');
+    <tbody id="evaluation-table-body">
+      <?php
+      include_once 'connAdmin.php';
+      $stmt = $dbconn->query('
+        SELECT
+          s.student_no,
+          a.application_id,
+          s.first_name,
+          s.last_name,
+          a.program,
+          a.gwa,
+          a.application_status,
+          a.active_status,
+          a.eligibility_status
+        FROM application a
+        JOIN student s ON a.student_id = s.student_id
+        WHERE a.eligibility_status = "Eligible"
+        ORDER BY a.submitted_at DESC, a.academic_year DESC
+      ');
 
-    //for future reference
-    /*$students = $dbconn->query('SELECT 
-                s.student_id,
-                s.student_no,
-                s.first_name,
-                s.last_name,
-                a.college,
-                a.program,
-                a.application_status,
-            FROM student s
-            LEFT JOIN application a ON s.student_id = a.student_id
-            ORDER BY s.last_name ASC');*/
+      $apps = $stmt->fetch_all(MYSQLI_ASSOC);
 
-    foreach ($students as $student) {
-      $prog = $student['program'] ?? "-";
-      $coll = $student['college'] ?? "-";
-      $status = $student['applicatioin_status'] ?? "-"; //future reference
-      echo " 
-    <tr>
-    <td>{$student['student_id']} </td> 
-    <td>{$student['student_no']}</td> 
-     <td> {$student['first_name']}</td>
-    <td>{$student['last_name']}</td> 
-   <td>{$student['sex']}</td>
-    <td>{$student['birthdate']}</td>  
-    <td>{$student['address']}</td>  
-    </tr>
-      ";
-    }
-    ?>
+      if (count($apps) === 0) {
+        echo '<tr><td colspan="6" style="text-align:center; padding:32px; color:#aaa;">No applications found.</td></tr>';
+      }
 
+      foreach ($apps as $app) {
+        $id       = $app['application_id'];
+        $name     = htmlspecialchars($app['last_name'] . ', ' . $app['first_name']);
+        $prog     = htmlspecialchars($app['program']);
+        $gwa      = htmlspecialchars($app['gwa']);
+        $status   = htmlspecialchars($app['application_status'] ?? 'Pending');
+        $dataName = strtolower($app['last_name'] . ' ' . $app['first_name']);
+        $studno = htmlspecialchars($app['student_no']);
+        $activestatus = htmlspecialchars($app['active_status'] ?? 'inactive');
+        $statusClass = match (strtolower($status)) {
+          'accepted' => 'accepted',
+          'rejected' => 'rejected',
+          default    => 'pending'
+        };
+      ?>
+        <tr onclick="viewListOfStudent(<?= $id ?>)" style="cursor:pointer;"
+          data-name="<?= $dataName ?>"
+          data-status="<?= $status ?>"
+          data-program="<?= $prog ?>"
+          data-gwa="<?= $gwa ?>">
+          <td><?= $studno ?></td>
+          <td><?= $name ?></td>
+          <td><?= $prog ?></td>
+          <td><?= $gwa ?></td>
+          <td><span class="status <?= $statusClass ?>"><?= $status ?></span></td>
+          <td><?= $activestatus ?></td>
+          <td class="evaluation-action-cell">
+            <div class="evaluation-action-group">
+              <button onclick="event.stopPropagation(); viewListOfStudent(<?= $id ?>)"
+                type="button" class="table-action evaluation-open-button">View</button>
+              <button onclick="event.stopPropagation(); deleteApplication(<?= $id ?>)"
+                type="button" class="table-action evaluation-open-button">Delete</button>
+            </div>
+          </td>
+        </tr>
+      <?php } ?>
+    </tbody>
   </table>
-  <p class="table-empty-state" id="students-empty-state" hidden>No students match the selected filters.</p>
+  <p class="table-empty-state" id="evaluation-empty-state" hidden>
+    No applicants match the current search or filter.
+  </p>
 </div>

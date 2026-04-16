@@ -1,11 +1,8 @@
 function loadPageAdmin(url, element) {
-
   $.ajax({
-
     url: url,
-
     success: function (response) {
-      const cleaned = response.replace(/<script\b[^>]*src[^>]*>([\s\S]*?)<\/script>/gi, '');
+      var cleaned = response.replace(/<script\b[^>]*src[^>]*>([\s\S]*?)<\/script>/gi, '');
       $("#main-content").html(cleaned);
 
       if (element) {
@@ -13,10 +10,12 @@ function loadPageAdmin(url, element) {
         $(element).addClass("active");
       }
 
+      // re-init filters every time a page loads
+      setupEvaluationFilters();
+      setupStudentFilters();
+      setupScrollSectionHighlight(".profile-tabs a[href^='#']", "active");
     }
-
   });
-
 }
 
 function viewApplicant(applicationId) {
@@ -30,9 +29,66 @@ function viewApplicant(applicationId) {
 
   });
 }
+
+function viewListOfStudent(applicationId) {
+  $.ajax({
+    url: "admin-viewListOfStudent.php",
+    data: { application_id: applicationId },
+    success: function (response) {
+      $("#modal").html(response).fadeIn(300);
+      $("#bg-modal").fadeIn(300);
+    }
+
+  });
+}
+function viewStudentAccount(id) {
+  $.ajax({
+    url: "admin-viewStudentsAccount.php",
+    method: "GET",
+    data: { student_id: id }, // This key MUST match the PHP $_GET key
+    success: function (response) {
+      $("#modal").html(response).fadeIn(300);
+      $("#bg-modal").fadeIn(300);
+    },
+    error: function () {
+      alert("Error loading student record.");
+    }
+  });
+}
+
+
 function closeAdminModal() {
   $("#modal").hide();
   $("#bg-modal").hide();
+}
+function updateScholarStatus(applicationId, action, btn) {
+  // We only care about deactivating here because the list is 'active-only'
+  $.ajax({
+    url: "admin-updateScholarStatus.php",
+    method: "POST",
+    data: { application_id: applicationId, action: action },
+    success: function () {
+      var row = $(btn).closest("tr");
+
+      // Animate the removal so the user sees them leave the list
+      row.fadeOut(400, function () {
+        $(this).remove();
+
+        // Show the empty state if that was the last scholar in the list
+        if ($('#scholars-table-body tr').length === 0) {
+          $('#scholars-table-body').append('<tr><td colspan="7" class="table-empty-state">No scholars found.</td></tr>');
+        }
+      });
+
+      // Show temporary success notification
+      var msg = $("#scholars-success-msg");
+      msg.text("Scholar deactivated successfully.").removeAttr("hidden").show();
+      setTimeout(function () { msg.fadeOut(); }, 3000);
+    },
+    error: function () {
+      alert("Error: Could not update status.");
+    }
+  });
 }
 
 function loadFullProfile(studentId) {
@@ -100,7 +156,7 @@ function submitAdd(e) {
       $('#modal').html(response).fadeIn(300);
       $('#bg-modal').fadeIn(300);
       // refresh table in background regardless of result
-      loadPageAdmin('admin-evaluation.php');
+      loadPageAdmin('admin-students.php');
     }
   });
 }
@@ -125,7 +181,7 @@ function confirmedDeleteProcess(applicationId) {
     data: { application_id: applicationId },
     success: function (response) {
       $('#modal').html(response).fadeIn(300);
-      loadPageAdmin('admin-evaluation.php');
+      loadPageAdmin('admin-students.php');
       closeAdminModal();
     }
   });
@@ -156,6 +212,174 @@ function submitEditProcess(event) {
   });
 }
 
+function setupEvaluationFilters() {
+  var searchInput = document.getElementById("evaluation-search");
+  var filterButton = document.getElementById("evaluation-filter-button");
+  var filterMenu = document.getElementById("evaluation-filter-menu");
+  var filterSelect = document.getElementById("evaluation-filter-value");
+  var filterTypeBtns = document.querySelectorAll("[data-evaluation-filter-type]");
+  var tableBody = document.getElementById("evaluation-table-body");
+  var emptyState = document.getElementById("evaluation-empty-state");
+
+  if (!tableBody) return; // not on evaluation page, skip
+
+  var activeFilterType = "status";
+  var activeFilterValue = "all";
+
+  var filterOptions = {
+    status: [
+      { value: "all", label: "All Status" },
+      { value: "Pending", label: "Pending" },
+      { value: "Accepted", label: "Accepted" },
+      { value: "Rejected", label: "Rejected" }
+    ],
+    program: [
+      { value: "all", label: "All Programs" }
+    ],
+    gwa: [
+      { value: "all", label: "All GWA" },
+      { value: "1.00-1.50", label: "1.00 – 1.50" },
+      { value: "1.51-1.75", label: "1.51 – 1.75" }
+    ]
+  };
+  $.getJSON("admin-getProgram.php", function (programs) {
+    filterOptions.program = [{ value: "all", label: "All Programs" }];
+    programs.forEach(function (prog) {
+      filterOptions.program.push({ value: prog, label: prog });
+    });
+  });
+  function applyFilters() {
+    var search = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    var rows = tableBody.querySelectorAll("tr");
+    var visible = 0;
+
+    rows.forEach(function (row) {
+      var name = (row.dataset.name || "").toLowerCase();
+      var status = (row.dataset.status || "").toLowerCase();
+      var program = (row.dataset.program || "").toLowerCase();
+      var gwa = parseFloat(row.dataset.gwa) || 0;
+
+      // search match
+      var matchSearch = !search || name.includes(search);
+
+      // filter match
+      var matchFilter = true;
+      if (activeFilterType && activeFilterValue !== "all") {
+        if (activeFilterType === "status") {
+          matchFilter = status === activeFilterValue.toLowerCase();
+        } else if (activeFilterType === "program") {
+          matchFilter = program === activeFilterValue.toLowerCase();
+        } else if (activeFilterType === "gwa") {
+          if (activeFilterValue === "1.00-1.50") matchFilter = gwa >= 1.00 && gwa <= 1.50;
+          if (activeFilterValue === "1.51-2.00") matchFilter = gwa >= 1.51 && gwa <= 2.00;
+        }
+      }
+
+      row.hidden = !(matchSearch && matchFilter);
+      if (!row.hidden) visible++;
+    });
+
+    if (emptyState) emptyState.hidden = visible > 0;
+  }
+
+  // search input
+  if (searchInput) {
+    searchInput.addEventListener("input", applyFilters);
+  }
+
+  // filter button toggle
+  if (filterButton && filterMenu) {
+    filterButton.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var isOpen = !filterMenu.hidden;
+      filterMenu.hidden = isOpen;
+      filterButton.setAttribute("aria-expanded", String(!isOpen));
+    });
+
+    document.addEventListener("click", function () {
+      if (filterMenu) filterMenu.hidden = true;
+      if (filterButton) filterButton.setAttribute("aria-expanded", "false");
+    });
+
+    filterMenu.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+  }
+
+  // filter type buttons
+  filterTypeBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var type = btn.dataset.evaluationFilterType;
+      var options = filterOptions[type] || [];
+
+      activeFilterType = type;
+      activeFilterValue = "all";
+
+      // highlight active type button
+      filterTypeBtns.forEach(function (b) {
+        b.classList.toggle("is-active", b === btn);
+      });
+
+      // populate select
+      if (filterSelect) {
+        filterSelect.innerHTML = options.map(function (o) {
+          return "<option value='" + o.value + "'>" + o.label + "</option>";
+        }).join("");
+        filterSelect.hidden = false;
+        filterSelect.value = "all";
+      }
+
+      applyFilters();
+    });
+  });
+
+  // filter value select
+  if (filterSelect) {
+    filterSelect.addEventListener("change", function () {
+      activeFilterValue = filterSelect.value;
+      applyFilters();
+    });
+  }
+
+  // Default: show only Pending on first load
+  var statusBtn = document.querySelector("[data-evaluation-filter-type='status']");
+  if (statusBtn) {
+    statusBtn.click();
+    if (filterSelect) {
+      filterSelect.value = "all";
+      activeFilterValue = "all";
+      applyFilters();
+    }
+  }
+}
+window.applyScholarsFilters = function () {
+  const selectedFilterType = activeFilterType;
+  const selectedFilterValue = normalizeValue(activeFilterValue);
+  let visibleRowCount = 0;
+
+  rows.forEach(function (row) {
+    const rowProgram = normalizeValue(row.dataset.program);
+    const rowStatus = normalizeValue(row.dataset.status);
+    let matchesChosenFilter = true;
+
+    if (selectedFilterType && selectedFilterValue !== "all") {
+      if (selectedFilterType === "program") {
+        matchesChosenFilter = rowProgram === selectedFilterValue;
+      } else if (selectedFilterType === "status") {
+        matchesChosenFilter = rowStatus === selectedFilterValue;
+      }
+    }
+
+    row.hidden = !matchesChosenFilter;
+
+    if (matchesChosenFilter) {
+      visibleRowCount += 1;
+    }
+  });
+
+  emptyState.hidden = visibleRowCount !== 0;
+}
+
 
 
 
@@ -174,7 +398,8 @@ const ADMIN_PENDING_STUDENTS_KEY = "scholarshipPortal.adminPendingStudents";
 const ADMIN_CREDENTIALS = [
   {
     username: "admin",
-    password: "admin123",
+    // this is sha256 of "admin123" — change this to your own hashed password
+    passwordHash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
     displayName: "Scholarship Admin"
   }
 ];
@@ -2183,7 +2408,7 @@ function getCurrentAdmin() {
 
 function logoutAdmin() {
   localStorage.removeItem(CURRENT_ADMIN_KEY);
-  window.location.href = "admin-login.html";
+  window.location.href = "admin-login.php";
 }
 
 function buildAdminProfileMenu(admin) {
@@ -2223,21 +2448,28 @@ function setupAdminLoginForm() {
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const formData = new FormData(form);
-    const username = String(formData.get("username")).trim();
-    const password = String(formData.get("password"));
-    const matchedAdmin = ADMIN_CREDENTIALS.find(function (admin) {
-      return admin.username === username && admin.password === password;
+    var errorEl = document.getElementById("login-error");
+    var formData = new FormData(form);
+    var username = String(formData.get("username")).trim();
+    var password = String(formData.get("password"));
+
+    // hash the entered password then compare
+    var hashedInput = sha256(password);
+
+    var matchedAdmin = ADMIN_CREDENTIALS.find(function (admin) {
+      return admin.username === username && admin.passwordHash === hashedInput;
     });
 
     if (!matchedAdmin) {
-      alert("Incorrect admin username or password.");
+      if (errorEl) errorEl.style.display = "block";
       return;
     }
 
+    if (errorEl) errorEl.style.display = "none";
+
     writeStorage(CURRENT_ADMIN_KEY, {
-      username,
-      displayName: matchedAdmin.displayName || titleCase(username.replace(/[._-]+/g, " ")) || "Admin"
+      username: username,
+      displayName: matchedAdmin.displayName || "Admin"
     });
 
     window.location.href = "admin.html";
@@ -2250,7 +2482,7 @@ function requireAdminAuthIfNeeded() {
   }
 
   if (!getCurrentAdmin()) {
-    window.location.href = "admin-login.html";
+    window.location.href = "admin-login.php";
   }
 }
 
@@ -2296,14 +2528,7 @@ function setupStudentFilters() {
   const tableBody = document.getElementById("students-table-body");
   const emptyState = document.getElementById("students-empty-state");
 
-  if (
-    !filterButton ||
-    !filterMenu ||
-    !filterValueSelect ||
-    !searchInput ||
-    !tableBody ||
-    !emptyState
-  ) {
+  if (!searchInput || !tableBody || !emptyState) {
     return;
   }
 
@@ -2337,6 +2562,7 @@ function setupStudentFilters() {
   }
 
   function setFilterMenuOpen(isOpen) {
+    if (!filterMenu || !filterButton) return;
     filterMenu.hidden = !isOpen;
     filterButton.setAttribute("aria-expanded", String(isOpen));
   }
@@ -2399,9 +2625,11 @@ function setupStudentFilters() {
     emptyState.hidden = visibleRowCount !== 0;
   }
 
-  filterButton.addEventListener("click", function () {
-    setFilterMenuOpen(filterMenu.hidden);
-  });
+  if (filterButton) {
+    filterButton.addEventListener("click", function () {
+      setFilterMenuOpen(filterMenu.hidden);
+    });
+  }
 
   filterTypeButtons.forEach(function (button) {
     button.addEventListener("click", function () {
@@ -2834,37 +3062,13 @@ function setupScholarsFilters() {
     applyScholarsFilters();
   }
 
-  function applyScholarsFilters() {
-    const selectedFilterType = activeFilterType;
-    const selectedFilterValue = normalizeValue(activeFilterValue);
-    let visibleRowCount = 0;
 
-    rows.forEach(function (row) {
-      const rowProgram = normalizeValue(row.dataset.program);
-      const rowStatus = normalizeValue(row.dataset.status);
-      let matchesChosenFilter = true;
 
-      if (selectedFilterType && selectedFilterValue !== "all") {
-        if (selectedFilterType === "program") {
-          matchesChosenFilter = rowProgram === selectedFilterValue;
-        } else if (selectedFilterType === "status") {
-          matchesChosenFilter = rowStatus === selectedFilterValue;
-        }
-      }
-
-      row.hidden = !matchesChosenFilter;
-
-      if (matchesChosenFilter) {
-        visibleRowCount += 1;
-      }
+  if (filterButton) {
+    filterButton.addEventListener("click", function () {
+      setFilterMenuOpen(filterMenu.hidden);
     });
-
-    emptyState.hidden = visibleRowCount !== 0;
   }
-
-  filterButton.addEventListener("click", function () {
-    setFilterMenuOpen(filterMenu.hidden);
-  });
 
   filterTypeButtons.forEach(function (button) {
     button.addEventListener("click", function () {

@@ -18,7 +18,6 @@ $stmt = $dbconn->prepare("
 
 // 3. Bind the parameter ( 'i' means integer)
 $stmt->bind_param("i", $application_id);
-
 // 4. Execute
 $stmt->execute();
 
@@ -28,7 +27,7 @@ $student = $result->fetch_assoc();
 
 $status = htmlspecialchars($student['application_status'] ?? 'Pending');
 
-$isApproved = strtolower($status) === 'approved';
+$isApproved = strtolower($status) === 'accepted';
 $isRejected = strtolower($status) === 'rejected';
 
 if (!$student) {
@@ -107,21 +106,10 @@ if (!$student) {
 </div>
 
 <div class="applicant-modal-actions">
-  <button type="button"
-    class="applicant-btn applicant-btn--approve <?= $isApproved ? 'btn-disabled' : '' ?>"
-    onclick="<?= $isApproved ? 'void(0)' : "confirmStatus($application_id, 'Approved')" ?>"
-    <?= $isApproved ? 'disabled' : '' ?>>
-    ✓ Approve
-  </button>
-  <button type="button"
-    class="applicant-btn applicant-btn--reject <?= $isRejected ? 'btn-disabled' : '' ?>"
-    onclick="<?= $isRejected ? 'void(0)' : "confirmStatus($application_id, 'Rejected')" ?>"
-    <?= $isRejected ? 'disabled' : '' ?>>
-    ✕ Reject
-  </button>
+
   <button type="button"
     class="applicant-btn applicant-btn--close"
-    onclick="loadPageAdmin('admin-evaluation.php')">
+    onclick="loadPageAdmin('admin-students.php')">
     Go Back
   </button>
 </div>
